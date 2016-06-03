@@ -4,6 +4,12 @@
 import json
 import requests
 import six
+import logging
+
+logging.basicConfig()
+
+logger = logging.getLogger(__name__)
+#logger.setLevel(logging.DEBUG)
 
 class RestMapper(object):
     def __init__(self, url_format, parsers={}, callback=None, method=requests.get, verify_ssl=True):
@@ -111,6 +117,7 @@ class RestMapperCall(object):
         else:
             data = None
 
+        logger.debug("URL: {}".format(url))
         response = self.method(
             url,
             data=data,

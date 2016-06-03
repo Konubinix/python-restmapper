@@ -119,7 +119,7 @@ class RestMapperCall(object):
         return self
 
     def __getitem__(self, k):
-        self.components.append(k)
+        self.components.append(str(k))
         return self
 
     @property

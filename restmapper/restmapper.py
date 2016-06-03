@@ -118,6 +118,65 @@ class RestMapperCall(object):
         self.components.append(k)
         return self
 
+    @property
+    def main(self):
+        return self.method(self.url).text
+
+    @property
+    def links(self):
+        return json.loads(self.main)["_links"]
+
+    @property
+    def embedded_values(self):
+        try:
+            return json.loads(self.main)["_embedded"].values()
+        except KeyError:
+            return {}
+
+    @property
+    def embedded_links(self):
+        return {
+            link for link in
+            {
+                re.sub("^{}(.*?)({{.+}})?$".format(self.url), r"\1", link)
+                for link in
+                {
+                    links["href"]
+                    for embeddeds in self.embedded_values
+                    for embedded in embeddeds
+                    for links in embedded["_links"].values()
+                } | {
+                    link["href"]
+                    for link in self.links.values()
+                    if link["href"].startswith(self.url)
+                }
+            }
+            if link != ''
+        }
+
+    @property
+    def _available_attributes(self):
+        return {
+            re.sub("^([0-9]+)/", r"[\1].", link)
+            for link in self.embedded_links
+        }
+
+    def __dir__(self):
+        return list(
+            self._available_attributes
+            | {
+                "main",
+                "links",
+                "embedded_links",
+                "method",
+                "GET",
+                "POST",
+                "PUT",
+                "PATCH",
+                "DELETE",
+            },
+        )
+
     def __getitem__(self, k):
         self.components.append(str(k))
         return self

@@ -122,15 +122,21 @@ class RestMapperCall(object):
         self.components.append(k)
         return self
 
-    def __call__(self, *args, **kwargs):
+    @property
+    def url(self):
         path = "/".join(self.components)
-
         if "{path}" in self.url_format:
             url_format_parameters = self.url_format_parameters
             url_format_parameters.update({'path': path})
             url = self.url_format.format(**url_format_parameters)
         else:
             url = self.url_format.format(**self.url_format_parameters) + path
+        if not url.endswith("/"):
+            url += "/"
+        return url
+
+    def __call__(self, *args, **kwargs):
+        url = self.url
 
         parse_response = kwargs.get('parse_response', True)
         headers = kwargs.get('headers', {})

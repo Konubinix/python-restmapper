@@ -5,6 +5,7 @@ import json
 import requests
 import six
 import logging
+import re
 
 logging.basicConfig()
 
@@ -14,6 +15,9 @@ logger = logging.getLogger(__name__)
 class RestMapper(object):
     def __init__(self, url_format, parsers={}, callback=None, method=requests.get, verify_ssl=True):
         self.url_format = url_format
+        if not self.url_format.endswith("/"):
+            self.url_format += "/"
+        self.url = self.url_format
         self.parsers = parsers
         self.callback = callback
         self._method = None
@@ -34,6 +38,39 @@ class RestMapper(object):
 
     def __repr__(self):
         return "<RestMapper url={}>".format(self.url_format)
+
+    @property
+    def main(self):
+        return self.method(self.url).text
+
+    @property
+    def links(self):
+        return json.loads(self.main)["_links"]
+
+    @property
+    def _available_attributes(self):
+        return [
+            re.sub(
+                "^{}(.*?)({{.+}})?$".format(self.url),
+                r"\1",
+                val["href"])
+            for val in self.links.values()
+        ]
+
+    def __dir__(self):
+        return (
+            self._available_attributes
+            + [
+                "main",
+                "links",
+                "method",
+                "GET",
+                "POST",
+                "PUT",
+                "PATCH",
+                "DELETE"
+            ]
+        )
 
     @property
     def method(self):

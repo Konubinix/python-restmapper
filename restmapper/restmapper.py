@@ -1,5 +1,9 @@
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+
 import json
 import requests
+import six
 
 class RestMapper(object):
     def __init__(self, url_format, parsers={}, callback=None, method=requests.get, verify_ssl=True):
@@ -119,7 +123,7 @@ class RestMapperCall(object):
         Object = None
         if parse_response:
             parse_as = None
-            for component, parser in self.parsers.iteritems():
+            for component, parser in six.iteritems(self.parsers):
                 if component in self.components:
                     Object = parser
 
@@ -139,4 +143,3 @@ class RestMapperCall(object):
                     return json_response
         else:
             return response
-

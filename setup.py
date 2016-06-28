@@ -70,5 +70,8 @@ setup(
     package_data={'': ['LICENSE', 'README.rst']},
     packages=['restmapper'],
     url=url,
+    install_requires=[
+        "six",
+    ]
     version=metadata['__version__'],
 )

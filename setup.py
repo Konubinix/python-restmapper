@@ -66,7 +66,7 @@ setup(
     classifiers=classifiers,
     cmdclass={'test': TestCommand},
     description="RestMapper takes the pain out of integrating with RESTful APIs",
-    install_requires=["six","requests>=2.0.0"],
+    install_requires=["six", "requests>=2.0.0"],
     keywords="restmapper",
     license=metadata['__license__'],
     long_description=long_description,

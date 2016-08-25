@@ -18,8 +18,8 @@ logger = logging.getLogger(__name__)
 class RestMapper(object):
     def __init__(self, url_format, parsers={}, callback=None, method=requests.get, verify_ssl=True):
         self.url_format = url_format
-        if not self.url_format.endswith("/"):
-            self.url_format += "/"
+        # if not self.url_format.endswith("/"):
+        #     self.url_format += "/"
         self.url = self.url_format
         self.parsers = parsers
         self.callback = callback
@@ -193,8 +193,8 @@ class RestMapperCall(object):
             url = self.url_format.format(**url_format_parameters)
         else:
             url = self.url_format.format(**self.url_format_parameters) + path
-        if not url.endswith("/"):
-            url += "/"
+        # if not url.endswith("/"):
+        #     url += "/"
         return url
 
     def __call__(self, *args, **kwargs):

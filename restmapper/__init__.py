@@ -22,4 +22,3 @@ __all__ = [
     '__url__',
     'RestMapper'
 ]
-

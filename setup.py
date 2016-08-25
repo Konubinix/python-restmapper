@@ -72,6 +72,6 @@ setup(
     url=url,
     install_requires=[
         "six",
-    ]
+    ],
     version=metadata['__version__'],
 )

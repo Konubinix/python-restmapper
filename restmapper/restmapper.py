@@ -13,7 +13,7 @@ logging.basicConfig()
 logger = logging.getLogger(__name__)
 
 
-# logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.DEBUG)
 
 class RestMapper(object):
     def __init__(self, url_format, parsers={}, callback=None, method=requests.get, verify_ssl=True):
@@ -25,6 +25,7 @@ class RestMapper(object):
         self.callback = callback
         self._method = None
         self.verify_ssl = verify_ssl
+        # tuple (user, password)
         self.auth = None
         self.client = requests.session()
 

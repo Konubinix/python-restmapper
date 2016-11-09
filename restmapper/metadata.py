@@ -5,4 +5,3 @@ __maintainer__ = "Dan Loewenherz"
 __email__ = "dan@lionheartsw.com"
 __license__ = "Apache 2.0"
 __url__ = "https://github.com/lionheart/python-restmapper"
-

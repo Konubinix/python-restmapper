@@ -1,10 +1,10 @@
 #!/usr/bin/env/python
 # -*- coding: utf-8 -*-
 
-from distutils.cmd import Command
 import os
 import re
 import unittest
+from distutils.cmd import Command
 
 try:
     from setuptools import setup
@@ -12,7 +12,10 @@ except ImportError:
     from distutils.core import setup
 
 metadata = {}
-execfile("restmapper/metadata.py", metadata)
+try:
+    execfile("restmapper/metadata.py", metadata)
+except:
+    exec(open("restmapper/metadata.py").read(), metadata)
 
 url = metadata['__url__']
 
@@ -41,6 +44,7 @@ classifiers = [
     "License :: OSI Approved :: Apache Software License",
 ]
 
+
 class TestCommand(Command):
     user_options = []
 
@@ -62,7 +66,7 @@ setup(
     classifiers=classifiers,
     cmdclass={'test': TestCommand},
     description="RestMapper takes the pain out of integrating with RESTful APIs",
-    install_requires=["requests>=2.0.0"],
+    install_requires=["six", "requests>=2.0.0"],
     keywords="restmapper",
     license=metadata['__license__'],
     long_description=long_description,
@@ -70,8 +74,5 @@ setup(
     package_data={'': ['LICENSE', 'README.rst']},
     packages=['restmapper'],
     url=url,
-    install_requires=[
-        "six",
-    ]
     version=metadata['__version__'],
 )

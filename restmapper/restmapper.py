@@ -2,21 +2,24 @@
 # -*- coding:utf-8 -*-
 
 import json
-import requests
-import six
 import logging
 import re
+
+import requests
+import six
 
 logging.basicConfig()
 
 logger = logging.getLogger(__name__)
-#logger.setLevel(logging.DEBUG)
+
+
+# logger.setLevel(logging.DEBUG)
 
 class RestMapper(object):
     def __init__(self, url_format, parsers={}, callback=None, method=requests.get, verify_ssl=True):
         self.url_format = url_format
-        if not self.url_format.endswith("/"):
-            self.url_format += "/"
+        # if not self.url_format.endswith("/"):
+        #     self.url_format += "/"
         self.url = self.url_format
         self.parsers = parsers
         self.callback = callback
@@ -55,7 +58,7 @@ class RestMapper(object):
                 r"\1",
                 val["href"])
             for val in self.links.values()
-        ]
+            ]
 
     def __dir__(self):
         return (
@@ -94,7 +97,7 @@ class RestMapper(object):
             method = self.method
             self.method = None
             return RestMapperCall(self.url_format, method, k, self.auth,
-                    self.parsers, self.callback, self.verify_ssl, **self.url_format_parameters)
+                                  self.parsers, self.callback, self.verify_ssl, **self.url_format_parameters)
 
 
 class RestMapperCall(object):
@@ -145,21 +148,21 @@ class RestMapperCall(object):
                     for embeddeds in self.embedded_values
                     for embedded in embeddeds
                     for links in embedded["_links"].values()
-                } | {
+                    } | {
                     link["href"]
                     for link in self.links.values()
                     if link["href"].startswith(self.url)
+                    }
                 }
-            }
             if link != ''
-        }
+            }
 
     @property
     def _available_attributes(self):
         return {
             re.sub("^([0-9]+)/", r"[\1].", link)
             for link in self.embedded_links
-        }
+            }
 
     def __dir__(self):
         return list(
@@ -190,8 +193,8 @@ class RestMapperCall(object):
             url = self.url_format.format(**url_format_parameters)
         else:
             url = self.url_format.format(**self.url_format_parameters) + path
-        if not url.endswith("/"):
-            url += "/"
+        # if not url.endswith("/"):
+        #     url += "/"
         return url
 
     def __call__(self, *args, **kwargs):
@@ -231,7 +234,6 @@ class RestMapperCall(object):
 
         Object = None
         if parse_response:
-            parse_as = None
             for component, parser in six.iteritems(self.parsers):
                 if component in self.components:
                     Object = parser

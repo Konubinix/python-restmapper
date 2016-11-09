@@ -72,7 +72,7 @@ License
 -------
 
 .. image:: http://img.shields.io/pypi/l/restmapper.svg?style=flat
-   :target: LICENSE
+:target: LICENSE
 
 Apache License, Version 2.0. See `LICENSE <LICENSE>`_ for details.
 

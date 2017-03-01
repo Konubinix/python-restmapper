@@ -215,7 +215,9 @@ class RestMapperCall(object):
 
         parse_response = kwargs.get('parse_response', True)
         headers = kwargs.get('headers', {})
-
+        json = None
+        if "json" in kwargs:
+            json = kwargs.pop("json")
         if 'headers' in kwargs:
             del kwargs['headers']
 
@@ -239,6 +241,7 @@ class RestMapperCall(object):
         response = self.method(
             url,
             data=data,
+            json=json,
             params=params,
             auth=self.auth,
             verify=self.verify_ssl,

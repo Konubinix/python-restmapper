@@ -99,6 +99,8 @@ class RestMapper(object):
         return self.__getattr__(k)
 
     def __getattr__(self, k):
+        if k in ["session", "method"]:
+            return super(RestMapper, self).__getattribute__(k)
         if k in ["GET", "POST", "PUT", "PATCH", "DELETE"]:
             self.method = getattr(self.session, k.lower())
             return self

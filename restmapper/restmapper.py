@@ -15,12 +15,15 @@ logger = logging.getLogger(__name__)
 
 logger.setLevel(logging.DEBUG)
 
+
 class RestMapper(object):
-    def __init__(self, url_format, parsers={}, callback=None, method=requests.get, verify_ssl=True):
+
+    def __init__(self, url_format, parsers={}, callback=None,
+                 method=requests.get, verify_ssl=True):
         self.url_format = url_format
+        self.url = self.url_format
         # if not self.url_format.endswith("/"):
         #     self.url_format += "/"
-        self.url = self.url_format
         self.parsers = parsers
         self.callback = callback
         self._method = None
@@ -98,11 +101,13 @@ class RestMapper(object):
             method = self.method
             self.method = None
             return RestMapperCall(self.url_format, method, k, self.auth,
-                                  self.parsers, self.callback, self.verify_ssl, **self.url_format_parameters)
+                                  self.parsers, self.callback, self.verify_ssl,
+                                  **self.url_format_parameters)
 
 
 class RestMapperCall(object):
-    def __init__(self, url_format, method, path, auth, parsers, callback=None, verify_ssl=True, **kwargs):
+    def __init__(self, url_format, method, path, auth, parsers, callback=None,
+                 verify_ssl=True, **kwargs):
         self.method = method
         self.components = [path]
         self.url_format = url_format
@@ -248,7 +253,9 @@ class RestMapperCall(object):
 
                 if parse_response and Object is not None:
                     if isinstance(json_response, list):
-                        return map(lambda k: Object(**Object.parse(k)), json_response)
+                        return map(
+                            lambda k: Object(**Object.parse(k)),
+                            json_response)
                     else:
                         return Object(**Object.parse(json_response))
                 else:

@@ -56,13 +56,18 @@ class RestMapper(object):
 
     @property
     def _available_attributes(self):
-        return [
-            re.sub(
-                "^{}(.*?)({{.+}})?$".format(self.url),
-                r"\1",
-                val["href"])
-            for val in self.links.values()
+        try:
+            return [
+                re.sub(
+                    "^{}(.*?)({{.+}})?$".format(self.url),
+                    r"\1",
+                    val["href"])
+                for values in self.links.values()
+                for val in values
             ]
+        except Exception as e:
+            logger.error("In _available_attributes: {}".format(e))
+            return []
 
     def __dir__(self):
         return (
